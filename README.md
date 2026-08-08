@@ -29,7 +29,8 @@ OSM 資料為 OpenStreetMap contributors 提供，Geofabrik 發布，依 ODbL �
 2. 建立 OSRM MLD graph。
 3. 啟動獨立 OSRM server。
 4. 執行 `tests/cases.json` 內的代表性路線。
-5. 上傳 `osrm-validation-report` artifact。
+5. 執行 `tests/quality-cases.json` 的路線品質稽核。
+6. 上傳 JSON 報告及可視化用 GeoJSON artifact。
 
 每次執行都使用暫時 runner；建圖檔不會提交到 Git，也不會影響任何正式服務。
 
@@ -68,3 +69,11 @@ docker stop osrm-taiwan-validation
 - 是否通過案例設定的距離與吸附門檻。
 
 `nearest` 案例另外確認 service／住宅區等位置附近確實存在可供汽車吸附的路網。這只是第一層檢查；正式接入前仍需人工查看路線是否走入私人道路、停車場捷徑或錯誤方向。
+
+品質稽核分成三種結果：
+
+- `pass`：未超過目前的自動安全門檻。
+- `review`：路線可用，但吸附距離、繞路比例或無名道路比例需要人工看 GeoJSON。
+- `fail`：無路線、吸附超過 300 公尺、距離／幾何異常或速度資料不合理。
+
+`review` 不會讓 Actions 失敗，因為它的目的就是標出需要人工判讀的案例；任何 `fail` 才會阻止流程通過。

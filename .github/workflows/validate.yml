@@ -26,6 +26,7 @@ jobs:
           image=ghcr.io/project-osrm/osrm-backend:latest
           docker pull "$image"
           docker image inspect "$image" --format '{{json .RepoDigests}}' > reports/osrm-image.json
+          docker run --rm "$image" cat /opt/car.lua > reports/car.lua
           started=$(date +%s)
           docker run --rm -t -v "$PWD/data:/data" "$image" \
             osrm-extract -p /opt/car.lua --output /data/osrm/taiwan.osrm /data/taiwan-latest.osm.pbf
@@ -51,6 +52,9 @@ jobs:
 
       - name: Validate representative routes
         run: python3 scripts/validate.py --base-url http://127.0.0.1:5000
+
+      - name: Audit route quality
+        run: python3 scripts/audit_quality.py --base-url http://127.0.0.1:5000
 
       - name: Capture runtime state
         if: always()

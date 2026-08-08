@@ -1,0 +1,99 @@
+{
+  "policy": {
+    "hard_max_snap_distance_m": 300,
+    "review_snap_distance_m": 75,
+    "review_detour_ratio": 3.5,
+    "review_unnamed_distance_ratio": 0.65,
+    "hard_max_speed_kmh": 180
+  },
+  "routes": [
+    {
+      "id": "ncku_campus_exit",
+      "category": "campus_service",
+      "description": "成功大學校園中心至臺南車站，檢查校園 service 道路出口",
+      "from": [120.2162155, 22.9990116],
+      "to": [120.2127, 22.9972],
+      "min_distance_km": 0.3,
+      "max_distance_km": 6
+    },
+    {
+      "id": "dream_mall_parking_exit",
+      "category": "parking_service",
+      "description": "夢時代中心至高雄展覽館附近，檢查停車場道路不被當成穿越捷徑",
+      "from": [120.3069875, 22.5950454],
+      "to": [120.2994, 22.6102],
+      "min_distance_km": 1,
+      "max_distance_km": 10
+    },
+    {
+      "id": "xiluo_service_area_exit",
+      "category": "motorway_service_area",
+      "description": "西螺服務區至西螺市區，檢查服務區與國道路網出口",
+      "from": [120.4796276, 23.7893153],
+      "to": [120.4607, 23.8005],
+      "min_distance_km": 3,
+      "max_distance_km": 40
+    },
+    {
+      "id": "qingshui_service_area_exit",
+      "category": "motorway_service_area",
+      "description": "清水服務區至沙鹿市區，檢查複雜服務區聯絡道路",
+      "from": [120.6008503, 24.2813055],
+      "to": [120.5696, 24.2370],
+      "min_distance_km": 5,
+      "max_distance_km": 45
+    },
+    {
+      "id": "dingjin_interchange",
+      "category": "complex_interchange",
+      "description": "鼎金系統交流道兩側市區連接，檢查匝道方向與繞行",
+      "from": [120.3205, 22.6880],
+      "to": [120.3425, 22.6750],
+      "min_distance_km": 2,
+      "max_distance_km": 25
+    },
+    {
+      "id": "puli_to_cingjing",
+      "category": "mountain_road",
+      "description": "埔里至清境，檢查山區道路連通與異常速度",
+      "from": [120.9715, 23.9676],
+      "to": [121.1562, 24.0440],
+      "min_distance_km": 20,
+      "max_distance_km": 70,
+      "review_detour_ratio": 4.5
+    },
+    {
+      "id": "hualien_to_suao",
+      "category": "mountain_trunk",
+      "description": "花蓮至蘇澳，檢查蘇花公路長距離山區幹道",
+      "from": [121.6065, 23.9911],
+      "to": [121.8503, 24.5967],
+      "min_distance_km": 70,
+      "max_distance_km": 160,
+      "review_detour_ratio": 2.5
+    },
+    {
+      "id": "kaohsiung_short_urban",
+      "category": "urban_oneway",
+      "description": "高雄市區短程路線，檢查單行道造成的不合理繞路",
+      "from": [120.2998, 22.6316],
+      "to": [120.3048, 22.6281],
+      "min_distance_km": 0.3,
+      "max_distance_km": 5,
+      "review_detour_ratio": 4.5
+    }
+  ],
+  "profile_required_tokens": [
+    "access_tag_blacklist",
+    "service_access_tag_blacklist",
+    "service_tag_forbidden",
+    "'private'",
+    "'emergency_access'",
+    "'steps'",
+    "'construction'",
+    "'proposed'",
+    "parking_aisle",
+    "driveway"
+  ]
+}
+
