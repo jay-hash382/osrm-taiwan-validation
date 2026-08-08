@@ -1,0 +1,52 @@
+{
+  "max_snap_distance_m": 500,
+  "routes": [
+    {
+      "id": "cross_city_motorway",
+      "description": "高雄至臺中，確認國道與快速幹道路網連通",
+      "from": [120.3014, 22.6273],
+      "to": [120.6848, 24.1477],
+      "min_distance_km": 150,
+      "max_distance_km": 260
+    },
+    {
+      "id": "kaohsiung_urban",
+      "description": "高雄市區一般道路",
+      "from": [120.3026, 22.6396],
+      "to": [120.3119, 22.6209],
+      "min_distance_km": 2,
+      "max_distance_km": 12
+    },
+    {
+      "id": "interchange_connection",
+      "description": "左營市區至鼎金系統交流道附近，確認一般道路與交流道路網連接",
+      "from": [120.2946, 22.6877],
+      "to": [120.3298, 22.6845],
+      "min_distance_km": 3,
+      "max_distance_km": 20
+    },
+    {
+      "id": "residential_to_primary",
+      "description": "住宅區至主要道路",
+      "from": [120.3052, 22.6547],
+      "to": [120.3263, 22.6633],
+      "min_distance_km": 2,
+      "max_distance_km": 12
+    }
+  ],
+  "nearest": [
+    {
+      "id": "campus_service_access",
+      "description": "校園／service 道路附近應能吸附汽車路網",
+      "point": [120.3209, 22.6275],
+      "max_distance_m": 500
+    },
+    {
+      "id": "rest_area_access",
+      "description": "高速公路服務區附近應能吸附汽車路網",
+      "point": [120.5350, 23.5158],
+      "max_distance_m": 1000
+    }
+  ]
+}
+

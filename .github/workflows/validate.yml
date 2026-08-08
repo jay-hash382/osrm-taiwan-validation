@@ -1,0 +1,63 @@
+name: Validate Taiwan OSRM
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Taiwan OpenStreetMap extract
+        run: |
+          mkdir -p data/osrm reports
+          curl --fail --location --retry 3 \
+            --output data/taiwan-latest.osm.pbf \
+            https://download.geofabrik.de/asia/taiwan-latest.osm.pbf
+          sha256sum data/taiwan-latest.osm.pbf > reports/taiwan-latest.osm.pbf.sha256
+
+      - name: Build MLD graph with official car profile
+        run: |
+          started=$(date +%s)
+          docker run --rm -t -v "$PWD/data:/data" ghcr.io/project-osrm/osrm-backend:v26.7.3 \
+            osrm-extract -p /opt/car.lua --output /data/osrm/taiwan.osrm /data/taiwan-latest.osm.pbf
+          docker run --rm -t -v "$PWD/data:/data" ghcr.io/project-osrm/osrm-backend:v26.7.3 \
+            osrm-partition /data/osrm/taiwan.osrm
+          docker run --rm -t -v "$PWD/data:/data" ghcr.io/project-osrm/osrm-backend:v26.7.3 \
+            osrm-customize /data/osrm/taiwan.osrm
+          finished=$(date +%s)
+          bytes=$(du -sb data/osrm | cut -f1)
+          printf '{"build_seconds":%s,"graph_bytes":%s}\n' "$((finished-started))" "$bytes" > reports/build.json
+
+      - name: Start isolated OSRM service
+        run: |
+          docker run -d --rm --name osrm-taiwan-validation -p 5000:5000 \
+            -v "$PWD/data:/data:ro" ghcr.io/project-osrm/osrm-backend:v26.7.3 \
+            osrm-routed --algorithm mld /data/osrm/taiwan.osrm
+          for i in {1..60}; do
+            curl -fsS http://127.0.0.1:5000/nearest/v1/driving/120.3014,22.6273 > /dev/null && exit 0
+            sleep 1
+          done
+          docker logs osrm-taiwan-validation
+          exit 1
+
+      - name: Validate representative routes
+        run: python3 scripts/validate.py --base-url http://127.0.0.1:5000
+
+      - name: Capture runtime state
+        if: always()
+        run: |
+          docker stats osrm-taiwan-validation --no-stream --format '{{json .}}' > reports/runtime-stats.json || true
+          docker logs osrm-taiwan-validation > reports/osrm.log 2>&1 || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: osrm-validation-report
+          path: reports/
+          retention-days: 30
