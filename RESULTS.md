@@ -46,3 +46,5 @@ All six automated cases passed. The service-area result is below its initial 1,0
 No App, weather backend or map-tile integration was performed in this validation.
 
 The follow-up route-quality audit is documented in [QUALITY_RESULTS.md](QUALITY_RESULTS.md).
+
+Runtime concurrency and rerouting measurements are documented in [LOAD_RESULTS.md](LOAD_RESULTS.md).
