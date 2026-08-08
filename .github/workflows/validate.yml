@@ -40,11 +40,16 @@ jobs:
 
       - name: Start isolated OSRM service
         run: |
+          started=$(date +%s%3N)
           docker run -d --rm --name osrm-taiwan-validation -p 5000:5000 \
             -v "$PWD/data:/data:ro" ghcr.io/project-osrm/osrm-backend:latest \
             osrm-routed --algorithm mld /data/osrm/taiwan.osrm
           for i in {1..60}; do
-            curl -fsS http://127.0.0.1:5000/nearest/v1/driving/120.3014,22.6273 > /dev/null && exit 0
+            if curl -fsS http://127.0.0.1:5000/nearest/v1/driving/120.3014,22.6273 > /dev/null; then
+              finished=$(date +%s%3N)
+              printf '{"startup_ms":%s}\n' "$((finished-started))" > reports/startup.json
+              exit 0
+            fi
             sleep 1
           done
           docker logs osrm-taiwan-validation
@@ -55,6 +60,17 @@ jobs:
 
       - name: Audit route quality
         run: python3 scripts/audit_quality.py --base-url http://127.0.0.1:5000
+
+      - name: Load-test initial routes and reroutes
+        run: |
+          : > reports/load-runtime.ndjson
+          python3 scripts/load_test.py --base-url http://127.0.0.1:5000 &
+          load_pid=$!
+          while kill -0 "$load_pid" 2>/dev/null; do
+            docker stats osrm-taiwan-validation --no-stream --format '{{json .}}' >> reports/load-runtime.ndjson || true
+            sleep 1
+          done
+          wait "$load_pid"
 
       - name: Capture runtime state
         if: always()

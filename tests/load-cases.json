@@ -1,0 +1,19 @@
+{
+  "concurrency_levels": [1, 4, 8, 16],
+  "requests_per_level": 300,
+  "thresholds": {
+    "max_error_rate": 0.01,
+    "max_p95_ms": 500
+  },
+  "routes": [
+    {"id": "cross_city", "type": "initial_route", "from": [120.3014, 22.6273], "to": [120.6848, 24.1477]},
+    {"id": "kaohsiung_urban", "type": "initial_route", "from": [120.3026, 22.6396], "to": [120.3119, 22.6209]},
+    {"id": "mountain", "type": "initial_route", "from": [120.9715, 23.9676], "to": [121.1562, 24.0440]},
+    {"id": "service_area", "type": "initial_route", "from": [120.6008503, 24.2813055], "to": [120.5696, 24.2370]},
+    {"id": "reroute_kaohsiung_1", "type": "reroute", "from": [120.3150, 22.6500], "to": [120.6848, 24.1477]},
+    {"id": "reroute_kaohsiung_2", "type": "reroute", "from": [120.3310, 22.6800], "to": [120.6848, 24.1477]},
+    {"id": "reroute_taichung_1", "type": "reroute", "from": [120.6500, 24.1000], "to": [120.3014, 22.6273]},
+    {"id": "reroute_taichung_2", "type": "reroute", "from": [120.6720, 24.1300], "to": [120.3014, 22.6273]}
+  ]
+}
+

@@ -77,3 +77,5 @@ docker stop osrm-taiwan-validation
 - `fail`：無路線、吸附超過 300 公尺、距離／幾何異常或速度資料不合理。
 
 `review` 不會讓 Actions 失敗，因為它的目的就是標出需要人工判讀的案例；任何 `fail` 才會阻止流程通過。
+
+端點規則詳見 [ENDPOINT_POLICY.md](ENDPOINT_POLICY.md)。Actions 亦會以 1、4、8、16 個並行請求測試初次規劃與偏離後重新規劃，記錄 p50、p95、p99、錯誤率、吞吐量與容器記憶體快照。
