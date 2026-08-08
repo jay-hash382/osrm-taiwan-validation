@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
 $Data = Join-Path $Root "data"
 $Pbf = Join-Path $Data "taiwan-latest.osm.pbf"
-$Image = "ghcr.io/project-osrm/osrm-backend:v26.7.3"
+$Image = "ghcr.io/project-osrm/osrm-backend:latest"
 
 New-Item -ItemType Directory -Force (Join-Path $Data "osrm") | Out-Null
 if (-not (Test-Path $Pbf)) {

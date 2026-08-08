@@ -15,7 +15,7 @@
 ## 資料與版本
 
 - OSM extract: `https://download.geofabrik.de/asia/taiwan-latest.osm.pbf`
-- OSRM image: `ghcr.io/project-osrm/osrm-backend:v26.7.3`
+- OSRM image: `ghcr.io/project-osrm/osrm-backend:latest`（每次報告會記錄實際 image digest）
 - Algorithm: MLD
 - Profile: OSRM 官方 `car.lua`
 

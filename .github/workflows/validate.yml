@@ -23,12 +23,15 @@ jobs:
 
       - name: Build MLD graph with official car profile
         run: |
+          image=ghcr.io/project-osrm/osrm-backend:latest
+          docker pull "$image"
+          docker image inspect "$image" --format '{{json .RepoDigests}}' > reports/osrm-image.json
           started=$(date +%s)
-          docker run --rm -t -v "$PWD/data:/data" ghcr.io/project-osrm/osrm-backend:v26.7.3 \
+          docker run --rm -t -v "$PWD/data:/data" "$image" \
             osrm-extract -p /opt/car.lua --output /data/osrm/taiwan.osrm /data/taiwan-latest.osm.pbf
-          docker run --rm -t -v "$PWD/data:/data" ghcr.io/project-osrm/osrm-backend:v26.7.3 \
+          docker run --rm -t -v "$PWD/data:/data" "$image" \
             osrm-partition /data/osrm/taiwan.osrm
-          docker run --rm -t -v "$PWD/data:/data" ghcr.io/project-osrm/osrm-backend:v26.7.3 \
+          docker run --rm -t -v "$PWD/data:/data" "$image" \
             osrm-customize /data/osrm/taiwan.osrm
           finished=$(date +%s)
           bytes=$(du -sb data/osrm | cut -f1)
@@ -37,7 +40,7 @@ jobs:
       - name: Start isolated OSRM service
         run: |
           docker run -d --rm --name osrm-taiwan-validation -p 5000:5000 \
-            -v "$PWD/data:/data:ro" ghcr.io/project-osrm/osrm-backend:v26.7.3 \
+            -v "$PWD/data:/data:ro" ghcr.io/project-osrm/osrm-backend:latest \
             osrm-routed --algorithm mld /data/osrm/taiwan.osrm
           for i in {1..60}; do
             curl -fsS http://127.0.0.1:5000/nearest/v1/driving/120.3014,22.6273 > /dev/null && exit 0

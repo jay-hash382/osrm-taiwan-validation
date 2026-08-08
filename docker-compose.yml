@@ -1,6 +1,6 @@
 services:
   osrm:
-    image: ghcr.io/project-osrm/osrm-backend:v26.7.3
+    image: ghcr.io/project-osrm/osrm-backend:latest
     container_name: osrm-taiwan-validation
     command: osrm-routed --algorithm mld /data/osrm/taiwan.osrm
     ports:

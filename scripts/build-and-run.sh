@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DATA="$ROOT/data"
-IMAGE="ghcr.io/project-osrm/osrm-backend:v26.7.3"
+IMAGE="ghcr.io/project-osrm/osrm-backend:latest"
 
 mkdir -p "$DATA/osrm"
 if [ ! -f "$DATA/taiwan-latest.osm.pbf" ]; then
