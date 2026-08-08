@@ -3,4 +3,5 @@ __pycache__/
 *.py[cod]
 reports/*.json
 reports/*.log
+reports/run-*/
 !reports/.gitkeep
